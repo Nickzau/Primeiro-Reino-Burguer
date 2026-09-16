@@ -1,6 +1,6 @@
 # Primeiro Reino Burger
 
-Aplicação completa para o Primeiro Reino Burger, importada do projeto Lovable e organizada como uma aplicação full-stack com React, TanStack Start, Tailwind CSS e Supabase.
+Aplicação completa para o Primeiro Reino Burger, organizada como uma aplicação full-stack com React, TanStack Start, Tailwind CSS e Supabase.
 
 ## O que já está incluído
 
@@ -35,10 +35,10 @@ Copie `.env.example` para `.env` e preencha as credenciais do Supabase. O arquiv
 ## Liberar o administrador
 
 1. Inicie o projeto com `npm run dev`.
-2. Abra `http://localhost:3000/auth`.
-3. Crie a conta usando o e-mail `nmoraes75@gmail.com`.
+2. Abra `http://localhost:000/auth`.
+3. Crie a conta usando o e-mail `admin12@admin.com`.
 4. No Supabase, abra **SQL Editor**, cole o conteúdo de `supabase/promote_admin.sql` e clique em **Run**.
-5. Volte para `http://localhost:3000/painel`, saia da conta e entre novamente.
+5. Volte para `http://localhost:000/painel`, saia da conta e entre novamente.
 
 O script interrompe com uma mensagem explicativa se a conta ainda não tiver sido criada.
 
