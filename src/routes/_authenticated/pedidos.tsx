@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2, RefreshCw, Trash2 } from "lucide-react";
 import { Logo } from "@/components/site/Logo";
+import { signOutEverywhere } from "@/components/auth/SessionSecurity";
 import { formatBRL } from "@/data/menu";
 import { getAdminStatus } from "@/lib/products.functions";
 import {
@@ -208,6 +209,13 @@ function OrdersPage() {
                 aria-hidden="true"
               />
               Atualizar
+            </button>
+            <button
+              type="button"
+              onClick={signOutEverywhere}
+              className="text-sm text-destructive hover:underline"
+            >
+              Sair de todos os dispositivos
             </button>
           </div>
         </header>

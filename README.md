@@ -12,6 +12,8 @@ Aplicação completa para o Primeiro Reino Burger, importada do projeto Lovable 
 - painel protegido para cadastrar, editar, ocultar e excluir produtos;
 - persistência de produtos e pedidos no Supabase;
 - migrations Drizzle/Supabase para produtos, permissões administrativas e pedidos.
+- proteção de sessão com logout automático após 30 minutos sem atividade ou 8 horas de duração;
+- opção de encerrar a sessão em todos os dispositivos pelo Supabase.
 
 ## Desenvolvimento local
 
@@ -45,3 +47,7 @@ O script interrompe com uma mensagem explicativa se a conta ainda não tiver sid
 ## Pedidos de clientes
 
 Depois de aplicar as migrations anteriores, execute também `drizzle/migrations/0003_customer_orders.sql`. A partir dela, o cliente precisa estar logado para finalizar um pedido. Cada pedido fica vinculado à conta autenticada e aparece em `/minha-conta`, com atualização automática de status.
+
+## Segurança de sessão
+
+O navegador encerra a sessão local após 30 minutos sem atividade ou 8 horas desde o início da sessão. As áreas autenticadas também oferecem **Sair de todos os dispositivos**, que revoga as sessões do usuário no Supabase. A autorização administrativa continua sendo validada no servidor e pelas políticas RLS do banco; esses controles não dependem do frontend.

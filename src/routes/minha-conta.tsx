@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Check, Clock3, MapPin, Package, Truck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
+import { signOutEverywhere } from "@/components/auth/SessionSecurity";
 import { formatBRL } from "@/data/menu";
 import { listCustomerOrders, type Order, type OrderStatus } from "@/lib/orders.functions";
 
@@ -95,7 +96,7 @@ function CustomerAccountPage() {
   const active = list.filter((order) => order.status !== "entregue" && order.status !== "cancelado");
   const delivered = list.filter((order) => order.status === "entregue");
   return <main className="min-h-screen bg-background px-4 py-8"><div className="mx-auto max-w-3xl">
-    <header className="flex flex-wrap items-center justify-between gap-4"><div className="flex items-center gap-3"><Logo className="h-12 w-12" /><div><p className="text-xs uppercase tracking-widest text-gold">Minha conta</p><h1 className="font-display text-3xl tracking-wide text-cream">{user.email}</h1></div></div><div className="flex gap-4"><Link to="/" className="text-sm text-gold hover:underline">Voltar ao site</Link><button type="button" className="text-sm text-muted-foreground hover:text-cream" onClick={() => supabase.auth.signOut().then(() => { window.location.href = "/"; })}>Sair</button></div></header>
+    <header className="flex flex-wrap items-center justify-between gap-4"><div className="flex items-center gap-3"><Logo className="h-12 w-12" /><div><p className="text-xs uppercase tracking-widest text-gold">Minha conta</p><h1 className="font-display text-3xl tracking-wide text-cream">{user.email}</h1></div></div><div className="flex flex-wrap gap-4"><Link to="/" className="text-sm text-gold hover:underline">Voltar ao site</Link><button type="button" className="text-sm text-muted-foreground hover:text-cream" onClick={() => supabase.auth.signOut().then(() => { window.location.href = "/"; })}>Sair</button><button type="button" className="text-sm text-destructive hover:underline" onClick={signOutEverywhere}>Sair de todos os dispositivos</button></div></header>
     <section className="mt-10"><h2 className="font-display text-2xl tracking-wide text-cream">Pedidos em andamento</h2>{orders.isPending ? <p className="mt-4 text-sm text-muted-foreground">Carregando pedidos...</p> : active.length ? <div className="mt-4 space-y-4">{active.map((order) => <OrderCard key={order.id} order={order} />)}</div> : <p className="mt-4 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground">Você não tem pedidos em andamento.</p>}</section>
     <section className="mt-10"><h2 className="font-display text-2xl tracking-wide text-cream">Pedidos entregues</h2>{delivered.length ? <div className="mt-4 space-y-4">{delivered.map((order) => <OrderCard key={order.id} order={order} />)}</div> : <p className="mt-4 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground">Seu histórico de pedidos entregues aparecerá aqui.</p>}</section>
   </div></main>;

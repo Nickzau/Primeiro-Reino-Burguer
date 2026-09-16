@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
+import { signOutEverywhere } from "@/components/auth/SessionSecurity";
 import { formatBRL } from "@/data/menu";
 import {
   deleteProduct,
@@ -183,6 +184,13 @@ function PanelPage() {
               className="rounded-full border border-border px-4 py-2 text-sm font-bold uppercase tracking-wider text-muted-foreground hover:text-cream"
             >
               Sair
+            </button>
+            <button
+              type="button"
+              onClick={signOutEverywhere}
+              className="text-sm text-destructive hover:underline"
+            >
+              Sair de todos os dispositivos
             </button>
           </div>
         </header>
