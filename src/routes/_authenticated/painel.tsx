@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { Bell, Loader2, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
 import { signOutEverywhere } from "@/components/auth/SessionSecurity";
@@ -80,6 +80,7 @@ function PanelPage() {
   const queryClient = useQueryClient();
   const adminFn = useServerFn(getAdminStatus);
   const listFn = useServerFn(listAllProducts);
+  const ordersFn = useServerFn(listOrders);
   const saveFn = useServerFn(saveProduct);
   const removeFn = useServerFn(deleteProduct);
 
@@ -94,6 +95,13 @@ function PanelPage() {
     queryFn: () => listFn(),
     enabled: admin.data?.isAdmin === true,
   });
+  const orders = useQuery({
+    queryKey: ["orders"],
+    queryFn: () => ordersFn(),
+    enabled: admin.data?.isAdmin === true,
+    refetchInterval: 15000,
+  });
+  const newOrdersCount = (orders.data ?? []).filter((order) => order.status === "novo").length;
 
   const save = useMutation({
     mutationFn: (data: FormState) =>
@@ -172,6 +180,26 @@ function PanelPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              to="/pedidos"
+              className="relative inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-bold uppercase tracking-wider text-muted-foreground hover:border-gold hover:text-gold"
+              aria-label={
+                newOrdersCount > 0
+                  ? `${newOrdersCount} pedido${newOrdersCount === 1 ? "" : "s"} novo${newOrdersCount === 1 ? "" : "s"}`
+                  : "Ver pedidos"
+              }
+            >
+              <Bell className="h-4 w-4" aria-hidden="true" />
+              <span>Pedidos</span>
+              {newOrdersCount > 0 && (
+                <span
+                  className="min-w-5 rounded-full bg-destructive px-1.5 py-0.5 text-center text-[10px] leading-4 text-destructive-foreground"
+                  aria-hidden="true"
+                >
+                  {newOrdersCount > 99 ? "99+" : newOrdersCount}
+                </span>
+              )}
+            </Link>
             <Link to="/" className="text-sm text-gold hover:underline">
               Ver site
             </Link>

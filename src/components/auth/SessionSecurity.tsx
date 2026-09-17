@@ -32,9 +32,8 @@ export function SessionSecurity() {
       const storedValue = localStorage.getItem(SESSION_STARTED_AT_KEY);
       const [storedUserId, storedStartedAtValue] = storedValue?.split(":") ?? [];
       const storedStartedAt = storedUserId === userId ? Number(storedStartedAtValue) : 0;
-      const startedAt = Number.isFinite(storedStartedAt) && storedStartedAt > 0
-        ? storedStartedAt
-        : Date.now();
+      const startedAt =
+        Number.isFinite(storedStartedAt) && storedStartedAt > 0 ? storedStartedAt : Date.now();
       localStorage.setItem(SESSION_STARTED_AT_KEY, `${userId}:${startedAt}`);
 
       clearTimers();
@@ -52,9 +51,10 @@ export function SessionSecurity() {
     };
 
     const activityEvents = ["pointerdown", "keydown", "touchstart", "scroll"];
-    activityEvents.forEach((event) => window.addEventListener(event, handleActivity, { passive: true }));
+    activityEvents.forEach((event) =>
+      window.addEventListener(event, handleActivity, { passive: true }),
+    );
 
-    let authSubscription: { unsubscribe: () => void } | undefined;
     void supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user.id) scheduleTimers(data.session.user.id);
     });
@@ -68,7 +68,7 @@ export function SessionSecurity() {
         scheduleTimers(session.user.id);
       }
     });
-    authSubscription = data.subscription;
+    const authSubscription = data.subscription;
 
     return () => {
       clearTimers();
