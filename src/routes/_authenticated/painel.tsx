@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
 import { signOutEverywhere } from "@/components/auth/SessionSecurity";
 import { formatBRL } from "@/data/menu";
+import { listOrders } from "@/lib/orders.functions";
 import {
   deleteProduct,
   getAdminStatus,

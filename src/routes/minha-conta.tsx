@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Clock3, MapPin, Package, Truck } from "lucide-react";
+import { Check, Clock3, MapPin, MessageCircle, Package, Truck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
 import { signOutEverywhere } from "@/components/auth/SessionSecurity";
-import { formatBRL } from "@/data/menu";
+import { formatBRL, WHATSAPP_LINK } from "@/data/menu";
 import { listCustomerOrders, type Order, type OrderStatus } from "@/lib/orders.functions";
 
 export const Route = createFileRoute("/minha-conta")({
@@ -60,6 +60,23 @@ function OrderCard({ order }: { order: Order }) {
         </span>
       </div>
       <OrderTimeline order={order} />
+      {order.status === "cancelado" && (
+        <div className="mt-4 rounded-2xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-cream">
+          <p>
+            Este pedido foi cancelado. Nossa equipe entrará em contato pelo WhatsApp para
+            informar os detalhes.
+          </p>
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex items-center gap-2 font-bold text-gold hover:underline"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            Falar com a equipe no WhatsApp
+          </a>
+        </div>
+      )}
       <ul className="mt-5 space-y-2 border-t border-border pt-4 text-sm text-cream">
         {order.items.map((item) => (
           <li key={item.id} className="flex justify-between gap-3">
@@ -95,9 +112,11 @@ function CustomerAccountPage() {
   const list = orders.data ?? [];
   const active = list.filter((order) => order.status !== "entregue" && order.status !== "cancelado");
   const delivered = list.filter((order) => order.status === "entregue");
+  const canceled = list.filter((order) => order.status === "cancelado");
   return <main className="min-h-screen bg-background px-4 py-8"><div className="mx-auto max-w-3xl">
     <header className="flex flex-wrap items-center justify-between gap-4"><div className="flex items-center gap-3"><Logo className="h-12 w-12" /><div><p className="text-xs uppercase tracking-widest text-gold">Minha conta</p><h1 className="font-display text-3xl tracking-wide text-cream">{user.email}</h1></div></div><div className="flex flex-wrap gap-4"><Link to="/" className="text-sm text-gold hover:underline">Voltar ao site</Link><button type="button" className="text-sm text-muted-foreground hover:text-cream" onClick={() => supabase.auth.signOut().then(() => { window.location.href = "/"; })}>Sair</button><button type="button" className="text-sm text-destructive hover:underline" onClick={signOutEverywhere}>Sair de todos os dispositivos</button></div></header>
     <section className="mt-10"><h2 className="font-display text-2xl tracking-wide text-cream">Pedidos em andamento</h2>{orders.isPending ? <p className="mt-4 text-sm text-muted-foreground">Carregando pedidos...</p> : active.length ? <div className="mt-4 space-y-4">{active.map((order) => <OrderCard key={order.id} order={order} />)}</div> : <p className="mt-4 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground">Você não tem pedidos em andamento.</p>}</section>
     <section className="mt-10"><h2 className="font-display text-2xl tracking-wide text-cream">Pedidos entregues</h2>{delivered.length ? <div className="mt-4 space-y-4">{delivered.map((order) => <OrderCard key={order.id} order={order} />)}</div> : <p className="mt-4 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground">Seu histórico de pedidos entregues aparecerá aqui.</p>}</section>
+    {canceled.length > 0 && <section className="mt-10"><h2 className="font-display text-2xl tracking-wide text-cream">Pedidos cancelados</h2><div className="mt-4 space-y-4">{canceled.map((order) => <OrderCard key={order.id} order={order} />)}</div></section>}
   </div></main>;
 }
