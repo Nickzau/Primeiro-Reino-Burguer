@@ -22,11 +22,26 @@ export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 export const HERO_PHOTO = photo("5738d6952c6e3ccbb31a58a76b35d710");
 
 export const GALLERY = [
-  { src: photo("7f05caf49cccb04b0308fd8d78117f30"), alt: "Castelo Inbox com mini smash burgers, nuggets e fritas" },
-  { src: photo("844295da2ae808e32a059e6f71e7c541"), alt: "Baconudo com cheddar, bacon em tiras e molho cheddar" },
-  { src: photo("72e7761b7ea163167340473772ab7edc"), alt: "Box Trinca com três hambúrgueres, fritas e anéis de cebola" },
-  { src: photo("fa77d7d38aa2ac0713bcbab49f396400"), alt: "Rib Balls de costela desfiada recheados com três queijos" },
-  { src: photo("45766e53589f86fe2334bb39f57f7ddf"), alt: "Xis Caramelizado com carne de panela e cebola caramelizada" },
+  {
+    src: photo("7f05caf49cccb04b0308fd8d78117f30"),
+    alt: "Castelo Inbox com mini smash burgers, nuggets e fritas",
+  },
+  {
+    src: photo("844295da2ae808e32a059e6f71e7c541"),
+    alt: "Baconudo com cheddar, bacon em tiras e molho cheddar",
+  },
+  {
+    src: photo("72e7761b7ea163167340473772ab7edc"),
+    alt: "Box Trinca com três hambúrgueres, fritas e anéis de cebola",
+  },
+  {
+    src: photo("fa77d7d38aa2ac0713bcbab49f396400"),
+    alt: "Rib Balls de costela desfiada recheados com três queijos",
+  },
+  {
+    src: photo("45766e53589f86fe2334bb39f57f7ddf"),
+    alt: "Xis Caramelizado com carne de panela e cebola caramelizada",
+  },
 ];
 
 export const INFO = {
@@ -38,7 +53,9 @@ export const INFO = {
     encodeURIComponent("Primeiro Reino Burger, R. José Luiz Martins Costa, 1006, Porto Alegre RS"),
   mapsEmbed:
     "https://www.google.com/maps?q=" +
-    encodeURIComponent("R. José Luiz Martins Costa, 1006, Rubem Berta, Porto Alegre - RS, 91250-394") +
+    encodeURIComponent(
+      "R. José Luiz Martins Costa, 1006, Rubem Berta, Porto Alegre - RS, 91250-394",
+    ) +
     "&output=embed",
   instagram: "https://www.instagram.com/primeiroreinoburger/",
   tiktok: "https://www.tiktok.com/@primeiroreinoburger",
@@ -60,6 +77,7 @@ export type Product = {
   image: string;
   category: Category;
   tag?: string;
+  isAvailable?: boolean;
 };
 
 export const PRODUCTS: Product[] = [
@@ -301,7 +319,8 @@ export const PRODUCTS: Product[] = [
   {
     id: "box-solo",
     name: "Box Solo",
-    description: "A box individual do reino: hambúrguer, acompanhamentos e molho para curtir sozinho.",
+    description:
+      "A box individual do reino: hambúrguer, acompanhamentos e molho para curtir sozinho.",
     price: 55,
     image: photo("96a0dbef422dba9b00b72edf5fae24c6"),
     category: "Combos",

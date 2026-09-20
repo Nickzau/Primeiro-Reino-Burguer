@@ -29,7 +29,7 @@ const rowToProduct = (row: {
   sortOrder: row.sort_order,
 });
 
-/** Cardápio público (apenas itens disponíveis). */
+/** Cardápio público, incluindo itens em falta para sinalização no site. */
 export const listMenu = createServerFn({ method: "GET" }).handler(async () => {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
   const client = createClient<Database>(process.env["SUPABASE_URL"]!, key, {
@@ -49,7 +49,6 @@ export const listMenu = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await client
     .from("products")
     .select("id, name, description, price, image, category, tag, is_available, sort_order")
-    .eq("is_available", true)
     .order("sort_order", { ascending: true });
 
   if (error) return [] as MenuProduct[];
@@ -73,7 +72,6 @@ export const getAdminStatus = createServerFn({ method: "GET" })
     if (error) return { isAdmin: false };
     return { isAdmin: Boolean(data) };
   });
-
 
 /** Cardápio completo para o painel (inclui itens ocultos). */
 export const listAllProducts = createServerFn({ method: "GET" })

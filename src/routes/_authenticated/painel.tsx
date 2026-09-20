@@ -361,7 +361,7 @@ function PanelPage() {
                 onChange={(e) => setForm({ ...form, isAvailable: e.target.checked })}
                 className="h-4 w-4 accent-[hsl(var(--gold))]"
               />
-              Mostrar este item no site
+              Disponível para venda
             </label>
 
             <div className="flex flex-wrap gap-3 sm:col-span-2">
@@ -421,7 +421,7 @@ function PanelPage() {
                       {p.name}{" "}
                       {!p.isAvailable && (
                         <span className="ml-1 text-xs uppercase tracking-widest text-muted-foreground">
-                          oculto
+                          em falta
                         </span>
                       )}
                     </p>

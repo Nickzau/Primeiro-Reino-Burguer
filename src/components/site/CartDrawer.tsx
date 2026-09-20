@@ -214,6 +214,12 @@ export function CartDrawer() {
 
           {items.length > 0 && (
             <div className="mt-6 space-y-5">
+              {items.some((item) => item.product.isAvailable === false) && (
+                <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-cream">
+                  Um ou mais itens do seu carrinho estão em falta. Remova-os para continuar o
+                  pedido.
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-2">
                 {(["Entrega", "Retirada"] as Mode[]).map((m) => (
                   <button
@@ -367,7 +373,11 @@ export function CartDrawer() {
           <button
             type="button"
             onClick={submit}
-            disabled={items.length === 0 || sending}
+            disabled={
+              items.length === 0 ||
+              sending ||
+              items.some((item) => item.product.isAvailable === false)
+            }
             className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-gradient px-6 py-4 font-display text-2xl tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {sending ? (
