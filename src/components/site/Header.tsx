@@ -76,10 +76,10 @@ export function Header() {
             Pedir agora
           </a>
           <a
-            href="/minha-conta"
+            href="/cliente"
             className="hidden shrink-0 text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-gold sm:block"
           >
-            Minha conta
+            Área do cliente
           </a>
 
           <button

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { CartProvider, useCart } from "@/lib/cart";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
@@ -51,6 +52,23 @@ function MobileCartBar() {
 function Index() {
   return (
     <CartProvider>
+      <IndexContent />
+    </CartProvider>
+  );
+}
+
+function IndexContent() {
+  const { open } = useCart();
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("abrirCarrinho") === "1") {
+      open();
+      window.history.replaceState({}, "", "/");
+    }
+  }, [open]);
+
+  return (
+    <>
       <Header />
       <main>
         <Hero />
@@ -63,6 +81,6 @@ function Index() {
       <Footer />
       <CartDrawer />
       <MobileCartBar />
-    </CartProvider>
+    </>
   );
 }

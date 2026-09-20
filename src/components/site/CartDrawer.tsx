@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Loader2, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { formatBRL, INFO, WHATSAPP_LINK } from "@/data/menu";
 import { useCart } from "@/lib/cart";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +28,12 @@ export function CartDrawer() {
   });
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    void supabase.auth.getUser().then(({ data }) => setAuthenticated(Boolean(data.user)));
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -114,7 +121,12 @@ export function CartDrawer() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true" aria-label="Seu pedido">
+    <div
+      className="fixed inset-0 z-50 flex justify-end"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Seu pedido"
+    >
       <button
         type="button"
         aria-label="Fechar carrinho"
@@ -146,7 +158,10 @@ export function CartDrawer() {
           ) : (
             <ul className="space-y-3">
               {items.map((i) => (
-                <li key={i.product.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
+                <li
+                  key={i.product.id}
+                  className="flex gap-3 rounded-2xl border border-border bg-card p-3"
+                >
                   <img
                     src={i.product.image}
                     alt={i.product.name}
@@ -179,7 +194,9 @@ export function CartDrawer() {
                       >
                         <Minus className="h-3.5 w-3.5" />
                       </button>
-                      <span className="min-w-4 text-center text-sm font-bold text-cream">{i.quantity}</span>
+                      <span className="min-w-4 text-center text-sm font-bold text-cream">
+                        {i.quantity}
+                      </span>
                       <button
                         type="button"
                         onClick={() => setQuantity(i.product.id, i.quantity + 1)}
@@ -330,6 +347,21 @@ export function CartDrawer() {
             <p role="alert" className="mt-3 text-sm text-destructive">
               {error}
             </p>
+          )}
+
+          {items.length > 0 && authenticated === false && (
+            <div className="mt-3 rounded-2xl border border-gold/40 bg-secondary/40 p-4 text-sm text-cream">
+              <p>
+                Entre ou crie sua conta para registrar e acompanhar este pedido. Seus itens
+                continuarão no carrinho.
+              </p>
+              <Link
+                to="/cliente"
+                className="mt-3 inline-flex rounded-full bg-gold-gradient px-4 py-2 font-bold text-primary-foreground"
+              >
+                Entrar ou criar conta
+              </Link>
+            </div>
           )}
 
           <button

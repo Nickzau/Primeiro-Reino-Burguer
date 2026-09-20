@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as MinhaContaRouteImport } from './routes/minha-conta'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
@@ -28,6 +29,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteRoute = ClienteRouteImport.update({
+  id: '/cliente',
+  path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinhaContaRoute = MinhaContaRouteImport.update({
@@ -49,6 +55,7 @@ const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cliente': typeof ClienteRoute
   '/minha-conta': typeof MinhaContaRoute
   '/painel': typeof AuthenticatedPainelRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cliente': typeof ClienteRoute
   '/minha-conta': typeof MinhaContaRoute
   '/painel': typeof AuthenticatedPainelRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
@@ -65,20 +73,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/cliente': typeof ClienteRoute
   '/minha-conta': typeof MinhaContaRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/minha-conta' | '/painel' | '/pedidos'
+  fullPaths:
+    '/' | '/auth' | '/cliente' | '/minha-conta' | '/painel' | '/pedidos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/minha-conta' | '/painel' | '/pedidos'
+  to: '/' | '/auth' | '/cliente' | '/minha-conta' | '/painel' | '/pedidos'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/cliente'
     | '/minha-conta'
     | '/_authenticated/painel'
     | '/_authenticated/pedidos'
@@ -88,6 +99,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ClienteRoute: typeof ClienteRoute
   MinhaContaRoute: typeof MinhaContaRoute
 }
 
@@ -112,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente': {
+      id: '/cliente'
+      path: '/cliente'
+      fullPath: '/cliente'
+      preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minha-conta': {
@@ -155,6 +174,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ClienteRoute: ClienteRoute,
   MinhaContaRoute: MinhaContaRoute,
 }
 export const routeTree = rootRouteImport
