@@ -28,19 +28,30 @@ const itemSchema = z.object({
   id: z.string().trim().min(1).max(80),
   name: z.string().trim().min(1).max(120),
   quantity: z.number().int().min(1).max(99),
-  price: z.number().min(0).max(9999),
+  price: z.number().finite().min(0).max(9999),
 });
 
 const orderSchema = z.object({
   customerName: z.string().trim().min(2, "Informe o nome").max(80),
-  customerPhone: z.string().trim().min(8, "Informe o telefone").max(30),
+  customerPhone: z
+    .string()
+    .trim()
+    .min(8, "Informe o telefone")
+    .max(30)
+    .regex(/^[0-9+()\s-]+$/, "Informe um telefone válido"),
   mode: z.enum(["Entrega", "Retirada"]),
   payment: z.enum(["Pix", "Cartão", "Dinheiro"]),
   address: z.string().trim().max(200).default(""),
   complement: z.string().trim().max(120).default(""),
   reference: z.string().trim().max(120).default(""),
   notes: z.string().trim().max(600).default(""),
-  items: z.array(itemSchema).min(1, "Adicione itens ao pedido").max(60),
+  items: z
+    .array(itemSchema)
+    .min(1, "Adicione itens ao pedido")
+    .max(60)
+    .refine((items) => new Set(items.map((item) => item.id)).size === items.length, {
+      message: "Não repita produtos no pedido",
+    }),
 });
 
 /** Registra o pedido para a equipe produzir (chamado pelo carrinho do site). */

@@ -51,6 +51,12 @@ Depois de aplicar as migrations anteriores, execute também `drizzle/migrations/
 
 Execute também `drizzle/migrations/0004_public_product_availability.sql` para permitir que o cardápio mostre produtos em falta sem permitir que sejam adicionados ou vendidos.
 
+Execute `drizzle/migrations/0005_database_integrity_constraints.sql` para reforçar no banco os preços, categorias, status, modalidade, pagamento e formato dos itens dos pedidos.
+
+## Backup e credenciais
+
+Ative os backups automáticos e teste a restauração no painel do Supabase. O projeto não cria backups por código. Use apenas a chave pública no navegador; `SUPABASE_SERVICE_ROLE_KEY`, quando necessária em funções server-side, deve existir somente como segredo do ambiente de produção, nunca em `.env.example`, no frontend ou no repositório.
+
 ## Segurança de sessão
 
 O navegador encerra a sessão local após 30 minutos sem atividade ou 8 horas desde o início da sessão. As áreas autenticadas também oferecem **Sair de todos os dispositivos**, que revoga as sessões do usuário no Supabase. A autorização administrativa continua sendo validada no servidor e pelas políticas RLS do banco; esses controles não dependem do frontend.
