@@ -1,6 +1,6 @@
 # Primeiro Reino Burger
 
-Aplicação completa para o Primeiro Reino Burger, importada do projeto Lovable e organizada como uma aplicação full-stack com React, TanStack Start, Tailwind CSS e Supabase.
+Aplicação completa para o Primeiro Reino Burger, organizada como uma aplicação full-stack com React, TanStack Start, Tailwind CSS e Supabase.
 
 ## O que já está incluído
 
